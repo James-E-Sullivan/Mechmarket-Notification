@@ -17,19 +17,28 @@ def splitTitle(title):
 
     titleList = []
 
-    split_H = title.split('[H]')
-    loc = split_H[0].strip(' ')
-    split_W = split_H[1].split('[W]')
-    haveString = split_W[0].strip(' ')
-    wantString = split_W[1].strip(' ')
+    if '[H]' in title and '[W]' in title:
 
-    print('Location:' + loc)
-    print('Has: ' + haveString)
-    print('Wants: ' + wantString)
+        split_H = title.split('[H]')
+        loc = split_H[0].strip(' ')
+        split_W = split_H[1].split('[W]')
+        haveString = split_W[0].strip(' ')
+        wantString = split_W[1].strip(' ')
 
+        #print('Location:' + loc)
+        #print('Has: ' + haveString)
+        #print('Wants: ' + wantString)
 
-    # Known issue. This return doesn't work.
-    return titleList[loc, haveString, wantString]
+        titleList.append(loc)
+        titleList.append(haveString)
+        titleList.append(wantString)
+
+        return titleList
+
+    else:
+        pass
 
 # Test splitTitle with example text
-splitTitle(new_title)
+#splitTitle(new_title)
+
+print(splitTitle(new_title))
