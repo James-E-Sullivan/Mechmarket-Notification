@@ -37,12 +37,12 @@ def splitTitle(title):
 
 def writeTitle(title):
 
-    titleFile = open("textfile", "w")
+    titleFile = open("title_file", "w")
     titleFile.write(title)
     titleFile.close()
 
 def appendTitle(title):
 
-    titleFile = open("textfile", "a")
+    titleFile = open("title_file", "a")
     titleFile.write(title + "\n")
     titleFile.close()
