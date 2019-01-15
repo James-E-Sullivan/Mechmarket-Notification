@@ -1,21 +1,22 @@
-new_title = '[US-MA] [H] TX-1800v2 [W] PayPal'
-w = 'TX-1800'
-
-#splitHave = s.split('[H]')
-#splitWant = splitHave[1].split('[W]')
-#output = splitWant[0]
-#output = output.strip(" ")
-#print(output)
-
-#if w in output:
-    #print('Your desired item is for sale.')
-
-#else:
-    #print('Try again later.')
+#new_title = '[US-MA] [H] TX-1800v2 [W] PayPal'
+#w = 'TX-1800'
 
 def splitTitle(title):
+    '''
+    Precondition: title is a title of a submission from a post on /r/mechmarket
 
+    Postcondition: return titleList, which is a list containing
+    [Seller location, Seller's item for sale, Seller's wants]
+
+    Notes:
+    Sell/Buy posts on /r/mechmarket must be in the following format...
+    [Location] [H] What the poster has [W] What the poster wants
+
+    :param title:
+    :return titleList:
+    '''
     titleList = []
+
 
     if '[H]' in title and '[W]' in title:
 
@@ -25,10 +26,6 @@ def splitTitle(title):
         haveString = split_W[0].strip(' ')
         wantString = split_W[1].strip(' ')
 
-        #print('Location:' + loc)
-        #print('Has: ' + haveString)
-        #print('Wants: ' + wantString)
-
         titleList.append(loc)
         titleList.append(haveString)
         titleList.append(wantString)
@@ -37,11 +34,6 @@ def splitTitle(title):
 
     else:
         pass
-
-# Test splitTitle with example text
-#splitTitle(new_title)
-
-#print(splitTitle(new_title))
 
 def writeTitle(title):
 
