@@ -41,4 +41,16 @@ def splitTitle(title):
 # Test splitTitle with example text
 #splitTitle(new_title)
 
-print(splitTitle(new_title))
+#print(splitTitle(new_title))
+
+def writeTitle(title):
+
+    titleFile = open("textfile", "w")
+    titleFile.write(title)
+    titleFile.close()
+
+def appendTitle(title):
+
+    titleFile = open("textfile", "a")
+    titleFile.write(title + "\n")
+    titleFile.close()

@@ -10,7 +10,7 @@ def send_Test_Message():
 
     with open('textfile', 'r') as message_file:
 
-        my_message = message_file.read().replace('\n', '')
+        my_message = message_file.read().replace('\n', ' ')
 
     text_source.close()
 
