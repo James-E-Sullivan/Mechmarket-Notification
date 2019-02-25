@@ -44,3 +44,33 @@ def get_Ten_Posts():
 
 #get_Ten_Titles()
 print(get_Ten_Posts())
+
+def get_New_Title():
+    '''
+    Postcondition: Returns the newest /r/mechmarket post title
+    '''
+
+    newest_title = []
+
+    for submission in reddit.subreddit('mechmarket').new(limit=1):
+        newest_title.append(submission.title)
+
+    return newest_title
+
+def get_Attributes():
+
+    attributes_dict = {"title": [], \
+                       "url": [], \
+                       "id": [], \
+                       "created": []}
+
+    for submission in reddit.subreddit('mechmarket').new(limit=1):
+        attributes_dict["title"].append(submission.title)
+        attributes_dict["url"].append(submission.url)
+        attributes_dict["id"].append(submission.id)
+        attributes_dict["created"].append(submission.created)
+
+    attributes_data = pd.DataFrame(attributes_dict)
+    attributes_data.to_csv('mm_new_posts.csv', index = False)
+
+get_Attributes()
