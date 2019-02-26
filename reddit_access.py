@@ -1,4 +1,5 @@
 import praw
+from title_functions import split_title
 
 reddit = praw.Reddit(client_id = 'eY4fcL32M0QJCA',
                      client_secret = 'nk4_7j9NNIu-t59frkoQk7sMlB4',
@@ -30,16 +31,23 @@ def get_Ten_Posts():
 
     for submission in reddit.subreddit('mechmarket').new(limit=10):
 
+        split_title_dict = split_title(submission.title)
+
         # Creates dictionary for submission information
         post_dict = {'Title': submission.title,
                      'Flair': submission.link_flair_text,
                      'id': submission.id,
                      'Time': submission.created_utc}
 
+        merged_dict = {**split_title_dict, **post_dict}
+
         # Appends submission dictionary to recent post list
-        recent_posts.append(post_dict)
+        recent_posts.append(merged_dict)
 
     return recent_posts
+
+
+
 
 
 #get_Ten_Titles()
@@ -59,9 +67,9 @@ def get_New_Title():
 
 def get_Attributes():
 
-    attributes_dict = {"title": [], \
-                       "url": [], \
-                       "id": [], \
+    attributes_dict = {"title": [],
+                       "url": [],
+                       "id": [],
                        "created": []}
 
     for submission in reddit.subreddit('mechmarket').new(limit=1):
@@ -72,5 +80,3 @@ def get_Attributes():
 
     attributes_data = pd.DataFrame(attributes_dict)
     attributes_data.to_csv('mm_new_posts.csv', index = False)
-
-get_Attributes()

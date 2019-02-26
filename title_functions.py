@@ -36,9 +36,10 @@ class MechMarketPost:
             pass
     """
 
+
 def split_title(title):
 
-    title_list = []
+    #title_list = []
 
     if '[H]' in title and '[W]' in title:
 
@@ -48,11 +49,17 @@ def split_title(title):
         have_string = split_W[0].strip(' ')
         want_string = split_W[1].strip(' ')
 
+        """
         title_list.append(location_tag)
         title_list.append(have_string)
         title_list.append(want_string)
+        """
 
-        return title_list
+        split_title_dict = {'Location': location_tag,
+                            'User Has': have_string,
+                            'User Wants': want_string}
+
+        return split_title_dict
 
     else:
         pass
