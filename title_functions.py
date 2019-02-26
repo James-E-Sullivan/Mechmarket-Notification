@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from reddit_access import get_Ten_Titles
+#from reddit_access import get_Ten_Titles
 
 new_title = '[US-MA] [H] TX-1800v2 [W] PayPal'
 w = 'TX-1800'
@@ -39,8 +39,6 @@ class MechMarketPost:
 
 def split_title(title):
 
-    #title_list = []
-
     if '[H]' in title and '[W]' in title:
 
         split_H = title.split('[H]')
@@ -49,12 +47,6 @@ def split_title(title):
         have_string = split_W[0].strip(' ')
         want_string = split_W[1].strip(' ')
 
-        """
-        title_list.append(location_tag)
-        title_list.append(have_string)
-        title_list.append(want_string)
-        """
-
         split_title_dict = {'Location': location_tag,
                             'User Has': have_string,
                             'User Wants': want_string}
@@ -62,7 +54,11 @@ def split_title(title):
         return split_title_dict
 
     else:
-        pass
+        split_title_dict = {'Location': 'N/A',
+                            'User Has': 'N/A',
+                            'User Wants': 'N/A'}
+
+        return split_title_dict
 
 
 def titles_to_df(split_titles):
@@ -86,6 +82,7 @@ def append_title_to_text(title):
     title_file.close()
 
 
+"""
 print(split_title(new_title))
 print(titles_to_df(split_title(new_title)))
 
@@ -93,14 +90,18 @@ test_list = [1, 2, 3]
 test_headers = ['Loc', 'Has', 'Wants']
 test_df = pd.DataFrame(test_list, test_headers)
 print(test_df)
+"""
 
-
+"""
 class TestTitleMethods(unittest.TestCase):
 
     def test_split_title(self):
         test_title = '[Location][H] Have_String [W] Want_string'
         self.assertTrue(split_title(test_title), ['[Location]', 'Have_String', 'Want_string'])
+"""
 
 
+"""
 if __name__ == '__main__':
     unittest.main()
+"""

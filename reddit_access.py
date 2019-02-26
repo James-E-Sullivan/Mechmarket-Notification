@@ -1,5 +1,7 @@
 import praw
 from title_functions import split_title
+import pandas as pd
+import time
 
 reddit = praw.Reddit(client_id = 'eY4fcL32M0QJCA',
                      client_secret = 'nk4_7j9NNIu-t59frkoQk7sMlB4',
@@ -25,33 +27,49 @@ def get_Ten_Titles():
     return recent_titles
 
 
-def get_Ten_Posts():
+def get_posts():
 
     recent_posts = []
 
-    for submission in reddit.subreddit('mechmarket').new(limit=10):
+    for submission in reddit.subreddit('mechmarket').new():
 
-        split_title_dict = split_title(submission.title)
+        # Looks for posts only within past 24 hours
+        if time.time() - submission.created_utc < 86400:
 
-        # Creates dictionary for submission information
-        post_dict = {'Title': submission.title,
-                     'Flair': submission.link_flair_text,
-                     'id': submission.id,
-                     'Time': submission.created_utc}
+            split_title_dict = split_title(submission.title)
 
-        merged_dict = {**split_title_dict, **post_dict}
+            # Creates dictionary for submission information
+            post_dict = {'Title': submission.title,
+                         'Flair': submission.link_flair_text,
+                         'id': submission.id,
+                         'Time': submission.created_utc}
 
-        # Appends submission dictionary to recent post list
-        recent_posts.append(merged_dict)
+            merged_dict = {**split_title_dict, **post_dict}
+
+            # Appends submission dictionary to recent post list
+            recent_posts.append(merged_dict)
+
+        else:
+            break
 
     return recent_posts
 
 
+def posts_to_df(post_list):
 
+    post_df = pd.DataFrame(posts for posts in post_list)
+    post_df.to_csv('mm_new_posts.csv', index=False)
+
+    return post_df
+
+
+
+print(posts_to_df(get_posts()))
 
 
 #get_Ten_Titles()
-print(get_Ten_Posts())
+#print(get_Ten_Posts())
+
 
 def get_New_Title():
     '''
