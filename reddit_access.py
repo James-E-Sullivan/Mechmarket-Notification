@@ -3,9 +3,9 @@ from title_functions import split_title
 import pandas as pd
 import time
 
-reddit = praw.Reddit(client_id = 'eY4fcL32M0QJCA',
-                     client_secret = 'nk4_7j9NNIu-t59frkoQk7sMlB4',
-                     user_agent = 'MechScraper v1.0 by /u/mech_scraper')
+reddit = praw.Reddit(client_id='eY4fcL32M0QJCA',
+                     client_secret='nk4_7j9NNIu-t59frkoQk7sMlB4',
+                     user_agent='MechScraper v1.0 by /u/mech_scraper')
 
 
 def get_posts():
@@ -55,4 +55,39 @@ def posts_to_df(post_list):
     return post_df
 
 
-print(posts_to_df(get_posts()))
+def user_post_search(keyword_list, most_recent_search_UTC):
+
+    recent_posts = []
+
+    for submission in reddit.subreddit('mechmarket').new():
+
+        if submission.created_utc > most_recent_search_UTC:
+
+            for keyword in keyword_list:
+                if keyword.lower() in submission.title.lower():
+
+                    split_title_dict = split_title(submission.title)
+
+                    # Creates dictionary for submission information
+                    post_dict = {'Title': submission.title,
+                                 'Flair': submission.link_flair_text,
+                                 'id': submission.id,
+                                 'Time Posted': submission.created_utc}
+
+                    # Merges Split title info with other post information
+                    merged_dict = {**split_title_dict, **post_dict}
+
+                    # Appends merged submission dictionary to recent post list
+                    recent_posts.append(merged_dict)
+
+                else:
+                    continue
+
+        else:
+            break
+
+    return recent_posts
+
+
+#print(posts_to_df(get_posts()))
+print(posts_to_df((user_post_search(['rama', 'JTK'], 1551565058.0))))
