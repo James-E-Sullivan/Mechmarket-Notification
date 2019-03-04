@@ -30,6 +30,11 @@ class User:
     def set_most_recent_post(self, post_time):
         self.most_recent_post = post_time
 
+    def __repr__(self):
+        return "Email: " + repr(self.__email) + "Most recent post: " + \
+               repr(self.most_recent_post) + \
+               "Keyword List: " + repr(self.keyword_list)
+
 
 def prompt_user_email():
     while True:
@@ -101,6 +106,7 @@ def test_create_new_user():
     user1 = create_new_user()
     print(user1.get_email())
     print(user1.get_keywords())
+    print(user1.__repr__())
 
 
-test_create_new_user()
+#test_create_new_user()

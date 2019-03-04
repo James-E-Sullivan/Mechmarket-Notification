@@ -63,8 +63,8 @@ def user_post_search(keyword_list, most_recent_search_UTC):
 
         if submission.created_utc > most_recent_search_UTC:
 
-            for keyword in keyword_list:
-                if keyword.lower() in submission.title.lower():
+            for keyword_dict in keyword_list:
+                if keyword_dict['Keyword'].lower() in submission.title.lower():
 
                     split_title_dict = split_title(submission.title)
 
@@ -90,4 +90,4 @@ def user_post_search(keyword_list, most_recent_search_UTC):
 
 
 #print(posts_to_df(get_posts()))
-print(posts_to_df((user_post_search(['rama', 'JTK'], 1551565058.0))))
+#print(posts_to_df((user_post_search([{'Keyword': 'GMK', 'Action': 1}], 1551565058.0))))
