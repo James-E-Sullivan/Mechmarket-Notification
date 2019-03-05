@@ -38,9 +38,13 @@ def posts_to_df(post_list):
     """
 
     post_df = pd.DataFrame(posts for posts in post_list)
-    post_df.to_csv('mm_new_posts.csv', index=False)
 
     return post_df
+
+
+def df_to_csv(post_df):
+
+    post_df.to_csv('mm_new_posts.csv', index=False)
 
 
 def user_post_search(keyword_list, most_recent_search_UTC):

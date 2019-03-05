@@ -4,6 +4,9 @@ import smtplib
 # Import necessary email modules
 from email.message import EmailMessage
 
+# Import password from secrets.py file
+from secrets import MM_PASSWORD
+
 
 def email_Package_Test():
 
@@ -88,7 +91,7 @@ def send_matching_posts(user_email, post_df):
     server = smtplib.SMTP('smtp.gmail.com', 587)
 
     # Prompt user for password - this must change before submission
-    user_password = input('Enter email password: ')  # Need a constant here
+    user_password = MM_PASSWORD
 
     server.ehlo()
     server.starttls()

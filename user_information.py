@@ -1,5 +1,6 @@
 import time
 
+
 class User:
     """
     User class stores information about the user, including email address,
@@ -54,9 +55,9 @@ def prompt_user_keyword():
         try:
             user_action = int(input('Please enter an integer corresponding to'
                                     ' one of the following options\n'
-                                    '1. Buy\n'
-                                    '2. Sell\n'
-                                    '3. Trade'))
+                                    '1. Buy \n'
+                                    '2. Sell \n'
+                                    '3. Trade \n'))
 
             if user_action not in range(1, 4):
                 print('Invalid input. Value outside of range.')
@@ -69,7 +70,7 @@ def prompt_user_keyword():
             print('Invalid input. Not an integer.')
             continue
 
-    user_keyword = input('Please enter the item you wish to buy/sell/trade')
+    user_keyword = input('Please enter the item you wish to buy/sell/trade: ')
 
     keyword_dict = {'Keyword': user_keyword,
                     'Action': user_action}
@@ -81,11 +82,12 @@ def create_new_user():
     user_email = prompt_user_email()
     keyword_list = []
 
+    keyword = prompt_user_keyword()
+    keyword_list.append(keyword)
+
     while True:
 
-        keyword = prompt_user_keyword()
-        keyword_list.append(keyword)
-        additional_keyword = input('Do you want to enter another keyword? Yes or No?')
+        additional_keyword = input('Do you want to enter another keyword? Yes or No? ')
 
         if additional_keyword.lower() == 'yes' or additional_keyword.lower() == 'y':
             continue
