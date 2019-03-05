@@ -1,4 +1,4 @@
-
+import time
 
 class User:
     """
@@ -10,7 +10,7 @@ class User:
     def __init__(self, email, keyword_list):
         self.__email = email
         self.keyword_list = keyword_list
-        self.most_recent_post = 0.0
+        self.most_recent_post = time.time()
 
     def add_keyword(self, new_keyword):
         self.keyword_list.append(new_keyword)

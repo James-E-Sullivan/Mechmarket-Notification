@@ -4,6 +4,7 @@ import smtplib
 # Import necessary email modules
 from email.message import EmailMessage
 
+
 def email_Package_Test():
 
     # Open a text file
@@ -59,5 +60,39 @@ def send_Test_Message():
 
     server.quit()
 
-# Test email_Package_Test function
-email_Package_Test()
+
+def send_matching_posts(user_email, post_df):
+
+    email_body_list = ['Mechmarket posts matching your keywords are listed '
+                       'below:\n']
+
+    # iterate through rows in the post DataFrame
+    for index, row in post_df.iterrows():
+        email_body_list.append('Keyword: ' + row['Keyword'])
+        email_body_list.append('Title: ' + row['Title'])
+        email_body_list.append('url: ' + row['url'] + '\n')
+
+    # Join each post paragraph into one string to create email body
+    email_body = '\n'.join(email_body_list)
+
+    # Set the content of the message to the email_body string
+    msg = EmailMessage()
+    msg.set_content(email_body)
+
+    # Set Subject, From, and To fields for the email
+    msg['Subject'] = 'Mechmarket Notification'
+    msg['From'] = 'mechmarket.notification@gmail.com'
+    msg['To'] = user_email
+
+    # Send the message via SMTP server
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+
+    # Prompt user for password - this must change before submission
+    user_password = input('Enter email password: ')  # Need a constant here
+
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+    server.login(msg['From'], user_password)
+    server.send_message(msg)
+    server.quit()
