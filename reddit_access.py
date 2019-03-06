@@ -1,34 +1,10 @@
 import praw
 import pandas as pd
-import time
+from secrets import PRAW_CLIENT_SECRET
 
 reddit = praw.Reddit(client_id='eY4fcL32M0QJCA',
-                     client_secret='nk4_7j9NNIu-t59frkoQk7sMlB4',
+                     client_secret=PRAW_CLIENT_SECRET,
                      user_agent='MechScraper v1.0 by /u/mech_scraper')
-
-
-def split_title(title):
-
-    if '[H]' in title and '[W]' in title:
-
-        split_H = title.split('[H]')
-        location_tag = split_H[0].strip(' ')
-        split_W = split_H[1].split('[W]')
-        have_string = split_W[0].strip(' ')
-        want_string = split_W[1].strip(' ')
-
-        split_title_dict = {'Location': location_tag,
-                            'User Has': have_string,
-                            'User Wants': want_string}
-
-        return split_title_dict
-
-    else:
-        split_title_dict = {'Location': 'N/A',
-                            'User Has': 'N/A',
-                            'User Wants': 'N/A'}
-
-        return split_title_dict
 
 
 def posts_to_df(post_list):
@@ -37,6 +13,8 @@ def posts_to_df(post_list):
     :return post_df: Returns a DataFrame w/ data from the dictionaries
     """
 
+    # Create a pandas DataFrame using post_list data.
+    # post_list dictionary keywords will be column headers
     post_df = pd.DataFrame(posts for posts in post_list)
 
     return post_df
@@ -47,22 +25,27 @@ def df_to_csv(post_df):
     post_df.to_csv('mm_new_posts.csv', index=False)
 
 
-def user_post_search(keyword_list, most_recent_search_UTC):
+def user_post_search(keyword_list, most_recent_search_utc):
 
     recent_posts = []
 
+    # Iterates through /r/mechmarket posts, starting at the most recent
     for submission in reddit.subreddit('mechmarket').new():
 
-        if submission.created_utc <= most_recent_search_UTC:
-
+        # If the post is older (or the same) as the most recent post sent to
+        # user, then the function ends and does not return anything
+        if submission.created_utc <= most_recent_search_utc:
             pass
 
-        elif submission.created_utc > most_recent_search_UTC:
+        # If the post is newer than the most recent post sent to user, post
+        # information is recorded in a dictionary
+        elif submission.created_utc > most_recent_search_utc:
 
-            for keyword_dict in keyword_list:
-                if keyword_dict['Keyword'].lower() in submission.title.lower():
+            # Iterates through keyword dictionaries (containing keyword, and
+            # action (buy/sell/trade) within the user's keyword_list
+            for keyword in keyword_list:
 
-                    split_title_dict = split_title(submission.title)
+                if keyword.lower() in submission.title.lower():
 
                     # Creates dictionary for submission information
                     # Will create duplicate dictionary if post has multiple
@@ -72,13 +55,10 @@ def user_post_search(keyword_list, most_recent_search_UTC):
                                  'id': submission.id,
                                  'url': submission.url,
                                  'Time Posted': submission.created_utc,
-                                 'Keyword': keyword_dict['Keyword']}
+                                 'Keyword': keyword}
 
-                    # Merges Split title info with other post information
-                    merged_dict = {**split_title_dict, **post_dict}
-
-                    # Appends merged submission dictionary to recent post list
-                    recent_posts.append(merged_dict)
+                    # Appends post dictionary to recent post list
+                    recent_posts.append(post_dict)
 
                 else:
                     continue
@@ -87,10 +67,3 @@ def user_post_search(keyword_list, most_recent_search_UTC):
             break
 
     return recent_posts
-
-
-#print(posts_to_df(get_posts()))
-#test_df = posts_to_df((user_post_search([{'Keyword': 'GMK', 'Action': 1}, {'Keyword': 'RAMA', 'Action': 2}], 1551752447.0)))
-
-#for index, row in test_df.iterrows():
-    #print(row['url'])

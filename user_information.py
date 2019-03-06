@@ -11,7 +11,7 @@ class User:
     def __init__(self, email, keyword_list):
         self.__email = email
         self.keyword_list = keyword_list
-        self.most_recent_post = time.time()
+        self.most_recent_post = time.time()  # initialized with current time
 
     def add_keyword(self, new_keyword):
         self.keyword_list.append(new_keyword)
@@ -36,6 +36,25 @@ class User:
                repr(self.most_recent_post) + \
                "Keyword List: " + repr(self.keyword_list)
 
+    def prompt_user_keyword(self):
+        user_keyword = input('Please enter an item you wish to '
+                             'buy/sell/trade: ').strip()
+        self.keyword_list.append(user_keyword)
+
+    def prompt_additional_keyword(self):
+        while True:
+            additional_keyword = input('Do you want to enter an additional '
+                                       'keyword? Yes or No:').strip().lower()
+            if additional_keyword == 'yes' or additional_keyword == 'y':
+                self.prompt_user_keyword()
+                self.prompt_additional_keyword()
+                break
+            elif additional_keyword == 'no' or additional_keyword == 'n':
+                break
+            else:
+                print('Please enter Yes or No. Y or N is also acceptable.')
+                continue
+
 
 def prompt_user_email():
     while True:
@@ -47,68 +66,3 @@ def prompt_user_email():
             continue
         else:
             return user_email
-
-
-def prompt_user_keyword():
-
-    while True:
-        try:
-            user_action = int(input('Please enter an integer corresponding to'
-                                    ' one of the following options\n'
-                                    '1. Buy \n'
-                                    '2. Sell \n'
-                                    '3. Trade \n'))
-
-            if user_action not in range(1, 4):
-                print('Invalid input. Value outside of range.')
-                continue
-
-            else:
-                break
-
-        except ValueError:
-            print('Invalid input. Not an integer.')
-            continue
-
-    user_keyword = input('Please enter the item you wish to buy/sell/trade: ')
-
-    keyword_dict = {'Keyword': user_keyword,
-                    'Action': user_action}
-    return keyword_dict
-
-
-def create_new_user():
-
-    user_email = prompt_user_email()
-    keyword_list = []
-
-    keyword = prompt_user_keyword()
-    keyword_list.append(keyword)
-
-    while True:
-
-        additional_keyword = input('Do you want to enter another keyword? Yes or No? ')
-
-        if additional_keyword.lower() == 'yes' or additional_keyword.lower() == 'y':
-            continue
-
-        elif additional_keyword.lower() == 'no' or additional_keyword.lower() == 'n':
-            break
-
-        else:
-            print('Invalid input. Please enter Yes or No.')
-
-    new_account = User(user_email, keyword_list)
-
-    return new_account
-
-
-def test_create_new_user():
-
-    user1 = create_new_user()
-    print(user1.get_email())
-    print(user1.get_keywords())
-    print(user1.__repr__())
-
-
-#test_create_new_user()
