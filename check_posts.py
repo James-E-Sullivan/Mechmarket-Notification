@@ -8,7 +8,8 @@ import pandas as pd
 
 def check_posts(user):
 
-    post_list = user_post_search(user.get_keywords(), user.get_most_recent_post())
+    post_list = user_post_search(user.get_keywords(),
+                                 user.get_most_recent_post())
     post_df = posts_to_df(post_list)
 
     # if the dataframe contains any data, do the following
@@ -48,14 +49,20 @@ def main():
 
     while True:
         try:
+            # Checks for new matching posts, emails user if there are matches
+            # new_posts references DataFrame of matching post information
             new_posts = check_posts(user1)
+
+            # Concatenate new_posts and post_log
             post_log = pd.concat([post_log, new_posts])
-            time.sleep(60)
+            time.sleep(60)  # Waits 1 minute before checking again
+
+        # If user performs KeyboardInterrupt (ctrl+c), post_log output to .csv
+        # and system exits
         except KeyboardInterrupt:
             print('\nExiting Program \n')
-            df_to_csv(post_log)
+            df_to_csv(post_log)  # Outputs runtime matching posts to .csv
             sys.exit()
-
 
 
 main()
